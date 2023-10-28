@@ -101,6 +101,10 @@ export class Account {
     return true;
   }
 
+  get getId() {
+    return this.id;
+  }
+
   private mayWithdraw(money: Money): boolean {
     return Money.add(
       this.calculateBalance(),
