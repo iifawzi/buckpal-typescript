@@ -50,4 +50,8 @@ export class Money {
   public isGreaterThan(money: Money): boolean {
     return this.amount > money.amount;
   }
+
+  public get getNumber() {
+    return this.amount;
+  }
 }

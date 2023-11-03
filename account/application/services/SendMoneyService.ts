@@ -21,18 +21,18 @@ export class SendMoneyService implements SendMoneyUseCase {
     this.updateAccountStatePort = updateAccountStatePort;
   }
 
-  public sendMoney(command: SendMoneyCommand): boolean {
+  public async sendMoney(command: SendMoneyCommand): Promise<boolean> {
     this.checkThreshold(command);
 
     const date = new Date();
     const baselineDate = new Date(date.setDate(date.getDate() - 10));
 
-    const sourceAccount = this.loadAccountPort.loadAccount(
+    const sourceAccount = await this.loadAccountPort.loadAccount(
       command.getSourceAccountId,
       baselineDate
     );
 
-    const targetAccount = this.loadAccountPort.loadAccount(
+    const targetAccount = await this.loadAccountPort.loadAccount(
       command.getTargetAccountId,
       baselineDate
     );

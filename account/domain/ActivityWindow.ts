@@ -43,7 +43,7 @@ export class ActivityWindow {
     return Money.add(depositBalance, withdrawalBalance.negate());
   }
 
-  public getActivities(): Activity[] {
+  public get getActivities(): Activity[] {
     return this.activities;
   }
 

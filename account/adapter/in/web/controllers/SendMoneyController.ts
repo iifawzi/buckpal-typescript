@@ -1,7 +1,9 @@
-import { SendMoneyCommand } from "../../../application/command/SendMoneyCommand";
-import { SendMoneyUseCase } from "../../../application/port/in/SendMoneyUseCase";
-import { AccountId } from "../../../domain/Account";
-import { Money } from "../../../domain/Money";
+import { SendMoneyCommand } from "account/application/command/SendMoneyCommand";
+import { AccountId } from "account/domain/Account";
+import { SendMoneyDTO } from "../dto/sendMoney.dto";
+import { SendMoneyUseCase } from "account/application/port/in/SendMoneyUseCase";
+import { Money } from "account/domain/Money";
+
 
 export class SendMoneyController {
   private sendMoneyUseCase: SendMoneyUseCase;
@@ -9,8 +11,7 @@ export class SendMoneyController {
     this.sendMoneyUseCase = sendMoneyUseCase;
   }
 
-  // TODO:: any for now, I need to set proper types when getting back to this.
-  public sendMoney(body: any): void {
+  public sendMoney(body: SendMoneyDTO): void {
     const targetAccountId = new AccountId(body.targetAccountId);
     const sourceAccountId = new AccountId(body.sourceAccountId);
     const money = Money.of(body.amount);

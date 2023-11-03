@@ -1,4 +1,4 @@
-import { Activity } from "./Activity";
+import { Activity, ActivityId } from "./Activity";
 import { ActivityWindow } from "./ActivityWindow";
 import { Money } from "./Money";
 
@@ -78,6 +78,7 @@ export class Account {
     }
 
     const withdrawal: Activity = new Activity(
+      null,
       this.id as AccountId,
       this.id as AccountId,
       targetAccountId,
@@ -91,6 +92,7 @@ export class Account {
 
   public deposit(money: Money, sourceAccountId: AccountId): boolean {
     const deposit: Activity = new Activity(
+      null,
       this.id as AccountId,
       sourceAccountId,
       this.id as AccountId,
@@ -105,6 +107,10 @@ export class Account {
     return this.id;
   }
 
+  get getActivityWindow() {
+    return this.activityWindow;
+  }
+
   private mayWithdraw(money: Money): boolean {
     return Money.add(
       this.calculateBalance(),
@@ -116,6 +122,10 @@ export class Account {
 export class AccountId {
   constructor(private value: number) {
     this.value = value;
+  }
+
+  get getValue() {
+    return this.value;
   }
 
   equals(accountId: AccountId) {

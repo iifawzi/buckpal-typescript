@@ -5,7 +5,7 @@ import { Money } from "./Money";
  * A money transfer activity between {@link Account}s.
  */
 export class Activity {
-  private id: ActivityId;
+  private id: ActivityId | null;
   /**
    * The account that owns this activity.
    */
@@ -28,12 +28,14 @@ export class Activity {
   private money: Money;
 
   constructor(
+    id: ActivityId | null,
     ownerAccountId: AccountId,
     sourceAccountId: AccountId,
     targetAccountId: AccountId,
     timestamp: Date,
     money: Money
   ) {
+    this.id = id;
     this.ownerAccountId = ownerAccountId;
     this.sourceAccountId = sourceAccountId;
     this.targetAccountId = targetAccountId;
@@ -42,7 +44,7 @@ export class Activity {
   }
 
   get getTimestamp() {
-    return this.getTimestamp;
+    return this.timestamp;
   }
 
   get getSourceAccountId() {
@@ -53,12 +55,20 @@ export class Activity {
     return this.sourceAccountId;
   }
 
+  get getOwnerAccountId() {
+    return this.ownerAccountId;
+  }
+
   get getMoney() {
     return this.money;
   }
+
+  getId() {
+    return this.id;
+  }
 }
 
-class ActivityId {
+export class ActivityId {
   private value: number;
 
   constructor(value: number) {

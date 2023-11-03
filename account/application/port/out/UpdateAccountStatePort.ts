@@ -1,5 +1,5 @@
 import { Account } from "../../../domain/Account";
 
 export interface UpdateAccountStatePort {
-  updateActivities(account: Account): void;
+  updateActivities(account: Account): Promise<void>;
 }
