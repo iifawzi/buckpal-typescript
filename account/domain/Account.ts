@@ -1,7 +1,6 @@
-import { Activity, ActivityId } from "./Activity";
+import { Activity } from "./Activity";
 import { ActivityWindow } from "./ActivityWindow";
 import { Money } from "./Money";
-
 /**
  * An account that holds a certain amount of money. An {@link Account} object only
  * contains a window of the latest account activities. The total balance of the account is
@@ -61,10 +60,12 @@ export class Account {
    * Calculates the total balance of the account by adding the activity values to the baseline balance.
    */
   public calculateBalance(): Money {
-    return Money.add(
+    const balance = Money.add(
       this.baselineBalance,
       this.activityWindow.calculateBalance(this.id as AccountId)
     );
+    console.log(`balance of account  ${this.id?.getValue} before the operation: `, balance);
+    return balance;
   }
 
   /**
@@ -83,7 +84,7 @@ export class Account {
       this.id as AccountId,
       targetAccountId,
       new Date(),
-      money.negate()
+      money
     );
 
     this.activityWindow.addActivity(withdrawal);

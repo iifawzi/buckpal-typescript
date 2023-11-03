@@ -40,6 +40,14 @@ export class ActivityWindow {
       .map((activity) => activity.getMoney)
       .reduce(Money.add, Money.ZERO);
 
+    console.log(
+      `depositBalance of account ${accountId.getValue}: `,
+      depositBalance
+    );
+    console.log(
+      `withdrawalBalance of account ${accountId.getValue}: `,
+      withdrawalBalance
+    );
     return Money.add(depositBalance, withdrawalBalance.negate());
   }
 

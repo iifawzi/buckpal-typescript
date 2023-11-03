@@ -1,8 +1,8 @@
 import Prisma from "@prisma/client";
-import { Account, AccountId } from "account/domain/Account";
-import { Activity, ActivityId } from "account/domain/Activity";
-import { ActivityWindow } from "account/domain/ActivityWindow";
-import { Money } from "account/domain/Money";
+import { Account, AccountId } from "@/account/domain/Account";
+import { Activity, ActivityId } from "@/account/domain/Activity";
+import { ActivityWindow } from "@/account/domain/ActivityWindow";
+import { Money } from "@/account/domain/Money";
 
 export class AccountMapper {
   public static mapToDomainEntity(

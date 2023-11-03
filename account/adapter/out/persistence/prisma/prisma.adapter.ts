@@ -5,23 +5,15 @@ import { AccountRepository } from "./repositories/account.repository";
 import { ActivityRepository } from "./repositories/Activity.repository";
 import { Prisma } from "@prisma/client";
 import { AccountMapper } from "./mappers/AccountMapper";
-import { AccountLock } from "account/application/port/out/AccountLock";
+import { AccountLockPort } from "account/application/port/out/AccountLock";
+import { injectable } from "tsyringe";
 
-export class PrismaPersistence
-  implements LoadAccountPort, UpdateAccountStatePort, AccountLock
-{
+@injectable()
+export class LoadAccountAdapter implements LoadAccountPort {
   constructor(
     private readonly accountRepository: AccountRepository,
     private readonly activityRepository: ActivityRepository
   ) {}
-
-  lockAccount(accountId: AccountId): void {
-    // locked
-  }
-
-  releaseAccount(AccountId: AccountId): void {
-    // released
-  }
 
   async loadAccount(
     accountId: AccountId,
@@ -56,15 +48,33 @@ export class PrismaPersistence
       depositBalance || 0
     );
   }
+}
+
+@injectable()
+export class UpdateAccountStateAdapter implements UpdateAccountStatePort {
+  constructor(private readonly activityRepository: ActivityRepository) {}
 
   async updateActivities(account: Account): Promise<void> {
     const activities = account.getActivityWindow.getActivities;
-    for (const activity of activities) {
+    for ( let i = 0; i < activities.length; i++) {
+      const activity = activities[i];
       if (activity.getId == null) {
         await this.activityRepository.save(
           AccountMapper.mapActivityToPrisma(activity)
         );
       }
     }
+  }
+}
+
+export class AccountLockAdapter implements AccountLockPort {
+  constructor() {}
+
+  lockAccount(accountId: AccountId): void {
+    // locked
+  }
+
+  releaseAccount(AccountId: AccountId): void {
+    // released
   }
 }

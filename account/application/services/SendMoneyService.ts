@@ -1,20 +1,23 @@
+import { TOKENS } from "@/di/Tokens";
 import { Money } from "../../domain/Money";
 import { SendMoneyCommand } from "../command/SendMoneyCommand";
 import { ThresholdExceededException } from "../exceptions/ThresholdExceededException";
 import { SendMoneyUseCase } from "../port/in/SendMoneyUseCase";
-import { AccountLock } from "../port/out/AccountLock";
+import { AccountLockPort } from "../port/out/AccountLock";
 import { LoadAccountPort } from "../port/out/LoadAccountPort";
 import { UpdateAccountStatePort } from "../port/out/UpdateAccountStatePort";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class SendMoneyService implements SendMoneyUseCase {
   private loadAccountPort: LoadAccountPort;
-  private accountLock: AccountLock;
+  private accountLock: AccountLockPort;
   private updateAccountStatePort: UpdateAccountStatePort;
 
   constructor(
-    loadAccountPort: LoadAccountPort,
-    accountLock: AccountLock,
-    updateAccountStatePort: UpdateAccountStatePort
+    @inject(TOKENS.AccountLockPort) accountLock: AccountLockPort,
+    @inject(TOKENS.LoadAccountPort) loadAccountPort: LoadAccountPort,
+    @inject(TOKENS.UpdateAccountStatePort) updateAccountStatePort: UpdateAccountStatePort
   ) {
     this.loadAccountPort = loadAccountPort;
     this.accountLock = accountLock;
@@ -42,7 +45,7 @@ export class SendMoneyService implements SendMoneyUseCase {
       throw new Error("expected source account ID not to be empty");
     }
 
-    const targetAccountId = sourceAccount.getId;
+    const targetAccountId = targetAccount.getId;
     if (!targetAccountId) {
       throw new Error("expected target account ID not to be empty");
     }
@@ -50,19 +53,19 @@ export class SendMoneyService implements SendMoneyUseCase {
     this.accountLock.lockAccount(sourceAccountId);
 
     if (!sourceAccount.withdraw(command.getMoney, targetAccountId)) {
-        this.accountLock.releaseAccount(sourceAccountId);
-        return false;
+      this.accountLock.releaseAccount(sourceAccountId);
+      return false;
     }
 
     this.accountLock.lockAccount(targetAccountId);
     if (!targetAccount.deposit(command.getMoney, sourceAccountId)) {
-        this.accountLock.releaseAccount(sourceAccountId);
-        this.accountLock.releaseAccount(targetAccountId);
-        return false;
+      this.accountLock.releaseAccount(sourceAccountId);
+      this.accountLock.releaseAccount(targetAccountId);
+      return false;
     }
-
-    this.updateAccountStatePort.updateActivities(sourceAccount);
-    this.updateAccountStatePort.updateActivities(targetAccount);
+    
+    await this.updateAccountStatePort.updateActivities(sourceAccount);
+    await this.updateAccountStatePort.updateActivities(targetAccount);
 
     this.accountLock.releaseAccount(sourceAccountId);
     this.accountLock.releaseAccount(targetAccountId);

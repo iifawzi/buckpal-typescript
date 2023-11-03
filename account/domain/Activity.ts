@@ -52,7 +52,7 @@ export class Activity {
   }
 
   get getTargetAccountId() {
-    return this.sourceAccountId;
+    return this.targetAccountId;
   }
 
   get getOwnerAccountId() {
@@ -63,7 +63,7 @@ export class Activity {
     return this.money;
   }
 
-  getId() {
+  get getId() {
     return this.id;
   }
 }
