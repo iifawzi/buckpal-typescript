@@ -28,7 +28,7 @@ By adhering to such architecture, the Business logic is fully isolated, and can 
 in the `getAccountBalanceService`, `SendMoneyService`, at which you will find that they're only applying business logic, and just communicating with the adapters ports ( not the actual implementation )
 
 
-The domain layer can be found in the `domain` folder under account, while the ports and adapter can be found at the `application` and `adapter` folders accordingly, split as `input` and `output`. 
+The domain layer can be found in the `domain` folder under account, while the ports and adapter can be found at the `application` and `adapter` folders respectively, split as `input` and `output`. 
 
 ### How to run?
 
