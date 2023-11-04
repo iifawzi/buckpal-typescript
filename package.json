@@ -21,6 +21,9 @@
   "bugs": {
     "url": "https://github.com/iifawzi/buckpal-typescript/issues"
   },
+  "prisma": {
+    "seed": "ts-node account/adapter/out/persistence/prisma/seed.ts"
+  },
   "homepage": "https://github.com/iifawzi/buckpal-typescript#readme",
   "devDependencies": {
     "@types/express": "^4.17.20",
