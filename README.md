@@ -17,7 +17,7 @@ the goal was just to implement the core logic in typescript. it's also missing t
 
 I've used https://github.com/microsoft/tsyringe from microsoft as a lightweight `dependency injection` container, which made me able to inject the necessary ports and services in an easy, and controllable way. 
 
-https://github.com/iifawzi/parcels-delivery-service/blob/4094ff475e0ace6c6781f08009c22b03a08bb86d/backend/di/production.ts#L10-L26
+https://github.com/iifawzi/buckpal-typescript/blob/92f8a1e3aa081beae61408440c58aa3de061835b/di/production.ts#L1-L18
 
 Thanks to the decorators, and our base abstractions we can simply program to interfaces and make `tsyringe` handles the rest. 
 
